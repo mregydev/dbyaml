@@ -19,8 +19,10 @@ Entities:
 
 {Dbconfig} contains information for the database provider including :
 
-## Source ## Database type you are using which is currently only mongodb that is supported in the future other types will be supported
-## ConnectionStr ## Connection string for database
+## Source 
+Database type you are using which is currently only mongodb that is supported in the future other types will be supported
+## ConnectionStr 
+Connection string for database
 
 {Entities} contains information for the data access entities and each entity contains property called {Fields} which contains list of string representing properties of this entity with each one contains property name and property type which now can be either (String,Number,Boolean, ref)
 
