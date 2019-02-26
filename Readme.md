@@ -34,13 +34,17 @@ In case you havenot entered path to dbyaml , it will be cosidered current workin
 
 After you run following files will be generated : 
 
-## DbStart.js : ## It will contain start function which connects to database server
+## DbStart.js : 
+It will contain start function which connects to database server
 
 Also it will create folder called Entities and then for each entity it will create three files (assuming entity name is student):
 
-## StudentSchema.js :## Returns object with it properties feild names and values field types
-## StudentEntity.js :## Return class that its properties is based on object returned from StudentSchema
-## StudentContext.js :## Return class used for applying crud operations on Student entity
+## StudentSchema.js :
+Returns object with it properties feild names and values field types
+## StudentEntity.js :
+Return class that its properties is based on object returned from StudentSchema
+## StudentContext.js :
+Return class used for applying crud operations on Student entity
 
 
 example folder shows how to use them
