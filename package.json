@@ -13,6 +13,7 @@
     "ci": "npm run lint && npm run prettier && npm run unittest &&  npm run report",
     "gcompile": "node_modules/.bin/gulp compile"
   },
+  "repository": {"type": "github","url": "https://github.com/mregydev/dbyaml"},
   "bin": "./output/index.js",
   "keywords": [],
   "author": "",
