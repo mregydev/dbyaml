@@ -1,0 +1,10 @@
+DbConfig:
+  Source: mongodb
+  ConnectionStr: mongodb://localhost:27017/test
+
+Entities:
+  Person:
+    Fields:
+      - Name String
+      - Age Number
+      - SchoolId ref School

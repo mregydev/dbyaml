@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "output",
+    "rootDir": ".",
+    "target": "es6",
+
+  },
+  "exclude": ["./test/**/*.spec.ts"]
+}

@@ -1,0 +1,31 @@
+    
+{
+  "check-coverage": true,
+  "lines":50,
+  "statements":50,
+  "functions":90,
+  
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx"
+    ],
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/*.js",
+      "test/**/*.spec.ts",
+        "coverage"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "sourceMap": true,
+    "instrument": true,
+  "reporter": [
+    "lcov",
+    "text-summary"
+  ]
+}
