@@ -7,4 +7,4 @@ Entities:
     Fields:
       - Name String
       - Age Number
-      - SchoolId ref School
+    
