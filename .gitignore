@@ -5,3 +5,4 @@ example/DAL
 .nyc_output
 .sonarlint
 .sonarlint
+integrationtest/DAL

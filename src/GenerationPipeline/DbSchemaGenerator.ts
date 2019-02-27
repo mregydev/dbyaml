@@ -1,5 +1,6 @@
 import * as ejs from "ejs";
 import * as fs from "fs";
+import * as prettier from "prettier";
 import Messages from "../Messages";
 /**
  * @param  {string} source
@@ -42,7 +43,9 @@ function GenerateSchema(
     );
 
     // bind schema properties
-    const parsedText = ejs.render(template.toString(), { properties });
+    let parsedText = ejs.render(template.toString(), { properties });
+
+    parsedText = prettier.format(parsedText, { parser: "babel" });
 
     fs.writeFileSync(
       `${basepath}/DAL/${entityname}/${entityname}Schema.js`,

@@ -16,7 +16,6 @@ class MongoosePackageInstaller {
   public InstallPackages() {
     return new Promise(resolve => {
       execSync("npm i mongoose --save");
-      execSync("npm i prettier  --save-dev");
       resolve(true);
     });
   }

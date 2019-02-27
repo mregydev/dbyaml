@@ -4,6 +4,7 @@ import * as fs from "fs";
 import * as sinon from "sinon";
 import { StartDbService } from "../../../src/GenerationPipeline/DbStartGenerator";
 import Messages from "../../../src/Messages";
+import * as prettier from "prettier";
 
 describe("Generate entity context test cases", () => {
   describe("passing wrong parameters", () => {
@@ -33,70 +34,81 @@ describe("Generate entity context test cases", () => {
       });
     });
 
-    it("should reject in case db source not supported", done => {
-      StartDbService(".", {
-        Source: "tt",
-        ConnectionStr: "mongodb://12:10/testdb"
-      }).catch(msg => {
-        expect(msg).to.equal(Messages.DbNotSuporrted);
-        done();
+    describe("happy case test scenario", () => {
+      let readSpy, renderSpy, writeSpy, formatStub;
+
+      beforeEach(() => {
+        readSpy = sinon.stub(fs, "readFileSync").returns("ww");
+        renderSpy = sinon
+          .stub(ejs, "render")
+          .withArgs("ww", { connectionStr: "mongodb://12:10/testdb" })
+          .returns("aaa");
+        writeSpy = sinon.stub(fs, "writeFileSync");
+        formatStub = sinon.stub(prettier, "format");
       });
-    });
-  });
 
-  describe("happy case test scenario", () => {
-    let readSpy, renderSpy, writeSpy;
-
-    beforeEach(() => {
-      readSpy = sinon.stub(fs, "readFileSync").returns("ww");
-      renderSpy = sinon
-        .stub(ejs, "render")
-        .withArgs("ww", { connectionStr: "mongodb://12:10/testdb" })
-        .returns("aaa");
-      writeSpy = sinon.stub(fs, "writeFileSync");
-    });
-
-    afterEach(() => {
-      sinon.restore();
-    });
-
-    it("should resolve to true in happy case", done => {
-      StartDbService(".", {
-        Source: "mongodb",
-        ConnectionStr: "mongodb://12:10/testdb"
-      }).then(res => {
-        expect(res).to.be.true;
-        done();
+      afterEach(() => {
+        sinon.restore();
       });
-    });
 
-    it("should read database start template", done => {
-      StartDbService(".", {
-        Source: "mongodb",
-        ConnectionStr: "mongodb://12:10/testdb"
-      }).then(() => {
-        sinon.assert.calledOnce(readSpy);
-        done();
+      it("should read prettier format", done => {
+        StartDbService(".", {
+          Source: "mongodb",
+          ConnectionStr: "mongodb://12:10/testdb"
+        }).then(res => {
+          expect(res).to.be.true;
+          done();
+        });
       });
-    });
 
-    it("should parse database start template", done => {
-      StartDbService(".", {
-        Source: "mongodb",
-        ConnectionStr: "mongodb://12:10/testdb"
-      }).then(() => {
-        sinon.assert.calledOnce(renderSpy);
-        done();
+      it("should resolve to true in happy case", done => {
+        StartDbService(".", {
+          Source: "mongodb",
+          ConnectionStr: "mongodb://12:10/testdb"
+        }).then(res => {
+          expect(res).to.be.true;
+          done();
+        });
       });
-    });
 
-    it("should save database start template", done => {
-      StartDbService(".", {
-        Source: "mongodb",
-        ConnectionStr: "mongodb://12:10/testdb"
-      }).then(() => {
-        sinon.assert.calledOnce(writeSpy);
-        done();
+      it("should reject in case db source not supported", done => {
+        StartDbService(".", {
+          Source: "mongodb",
+          ConnectionStr: "mongodb://12:10/testdb"
+        }).then(() => {
+          sinon.assert.calledOnce(formatStub);
+          done();
+        });
+      });
+
+      it("should read database start template", done => {
+        StartDbService(".", {
+          Source: "mongodb",
+          ConnectionStr: "mongodb://12:10/testdb"
+        }).then(() => {
+          sinon.assert.calledOnce(readSpy);
+          done();
+        });
+      });
+
+      it("should parse database start template", done => {
+        StartDbService(".", {
+          Source: "mongodb",
+          ConnectionStr: "mongodb://12:10/testdb"
+        }).then(() => {
+          sinon.assert.calledOnce(renderSpy);
+          done();
+        });
+      });
+
+      it("should save database start template", done => {
+        StartDbService(".", {
+          Source: "mongodb",
+          ConnectionStr: "mongodb://12:10/testdb"
+        }).then(() => {
+          sinon.assert.calledOnce(writeSpy);
+          done();
+        });
       });
     });
   });

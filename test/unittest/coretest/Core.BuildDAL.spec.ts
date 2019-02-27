@@ -12,7 +12,6 @@ describe("Core - BuildDAL function test cases", () => {
     buildRequiredPackages,
     fsmock,
     buildDbStartFunction,
-    beautifyCode,
     buildEntities,
     yamlparse;
 
@@ -23,7 +22,7 @@ describe("Core - BuildDAL function test cases", () => {
     buildRequiredPackages = sinon.stub(yamlCore, "BuildRequiredPackages");
     buildDbStartFunction = sinon.stub(yamlCore, "BuildDbStartFunction");
     buildEntities = sinon.stub(yamlCore, "BuildEntities");
-    beautifyCode = sinon.stub(yamlCore, "BeautifyCode");
+
     yamlparse = sinon.stub(yaml, "parse").returns(config);
   });
 
@@ -35,6 +34,11 @@ describe("Core - BuildDAL function test cases", () => {
     fsmock
       .expects("existsSync")
       .withArgs("./dbconfig.yml")
+      .returns(false);
+
+    fsmock
+      .expects("existsSync")
+      .withArgs("./dbconfig.yaml")
       .returns(false);
     yamlCore.BuildDAL().then(() => {
       fsmock.verify();
@@ -132,26 +136,6 @@ describe("Core - BuildDAL function test cases", () => {
 
     yamlCore.BuildDAL().then(() => {
       sinon.assert.calledOnce(buildEntities);
-      done();
-    });
-  });
-
-  it("shoud call BeautifyCode function in normal case", done => {
-    fsmock
-      .expects("existsSync")
-      .withArgs("./dbconfig.yml")
-      .returns(true);
-    fsmock
-      .expects("readFileSync")
-      .withArgs("./dbconfig.yml")
-      .returns("content");
-    fsmock
-      .expects("existsSync")
-      .withArgs("./DAL")
-      .returns(true);
-
-    yamlCore.BuildDAL().then(() => {
-      sinon.assert.calledOnce(beautifyCode.withArgs("."));
       done();
     });
   });

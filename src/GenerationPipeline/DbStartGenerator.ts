@@ -1,7 +1,9 @@
 import * as ejs from "ejs";
 import * as fs from "fs";
+import * as prettier from "prettier";
 import Config from "../Config";
 import Messages from "../Messages";
+
 /**
  * @param  {string} basePath
  * @param  {{Source:string;ConnectionStr:string;}} dboconfig
@@ -27,10 +29,11 @@ function StartDbService(
       );
 
       // bind connection string
-      const parsedText = ejs.render(template.toString(), {
+      let parsedText = ejs.render(template.toString(), {
         connectionStr: dboconfig.ConnectionStr
       });
 
+      parsedText = prettier.format(parsedText, { parser: "babel" });
       // Save to file
       fs.writeFileSync(`${basePath}/DAL/DbStart.js`, parsedText);
 

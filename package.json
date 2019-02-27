@@ -4,19 +4,26 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "integrationtest": "node_modules/.bin/mocha test/integrationtest/**/*.spec.ts",
+    "integrationtest": "node_modules/.bin/mocha test/integrationtest/*.spec.ts",
     "unittest": "node_modules/.bin/nyc node_modules/.bin/mocha test/unittest/**/*.spec.ts",
-    "compile": "node_modules/.bin/tsc -w -p .",
     "prettier": "node_modules/.bin/prettier --write ./**/{*.ts,*.spec.ts}",
     "lint": "node_modules/.bin/tslint --fix --project ./tsconfig.json ./src/**/{*.ts,*.spec.ts}",
     "report": "node_modules/.bin/nyc report --reporter=lcov>coverage.lcov && codecov",
     "ci": "npm run lint && npm run prettier && npm run unittest &&  npm run report",
-    "gcompile": "node_modules/.bin/gulp compile"
+    "compile": "node_modules/.bin/gulp compile"
   },
-  "repository": {"type": "github","url": "https://github.com/mregydev/dbyaml"},
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/mregydev/dbyaml"
+  },
   "bin": "./output/index.js",
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "mongoose",
+    "database",
+    "parse",
+    "yaml"
+  ],
+  "author": "mregydev",
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.3.4",
@@ -27,6 +34,7 @@
     "@types/execa": "^0.9.0",
     "@types/mocha": "^5.2.6",
     "@types/node": "^11.9.0",
+    "@types/prettier": "^1.16.1",
     "@types/sinon": "^7.0.6",
     "@types/yaml": "^1.0.1",
     "chai": "^4.2.0",
@@ -36,7 +44,7 @@
     "gulp": "^4.0.0",
     "link": "^0.1.5",
     "mocha": "^5.2.0",
-    "mongoose": "^5.4.15",
+    "mongoose": "^5.4.16",
     "npm": "^6.8.0",
     "sinon": "^7.2.3",
     "ts-mocha": "^2.0.0",

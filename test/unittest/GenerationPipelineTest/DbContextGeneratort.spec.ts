@@ -3,6 +3,7 @@ import { expect } from "chai";
 import * as ejs from "ejs";
 import * as fs from "fs";
 import * as sinon from "sinon";
+import * as prettier from "prettier";
 import { GenerateEntityContext } from "../../../src/GenerationPipeline/DbContextGenerator";
 import Messages from "../../../src/Messages";
 
@@ -24,15 +25,16 @@ describe("Generate entity context test cases", () => {
   });
 
   describe("happy case test scenario", () => {
-    let readSpy, renderSpy, writeSpy;
+    let readStub, renderStub, writeStub, formatStub;
 
     beforeEach(() => {
-      readSpy = sinon.stub(fs, "readFileSync").returns("ww");
-      renderSpy = sinon
+      readStub = sinon.stub(fs, "readFileSync").returns("ww");
+      renderStub = sinon
         .stub(ejs, "render")
         .withArgs("ww", { entityname: "Student" })
         .returns("aaa");
-      writeSpy = sinon.stub(fs, "writeFileSync");
+      writeStub = sinon.stub(fs, "writeFileSync");
+      formatStub = sinon.stub(prettier, "format");
     });
 
     afterEach(() => {
@@ -46,23 +48,30 @@ describe("Generate entity context test cases", () => {
       });
     });
 
+    it("should read prettier format", done => {
+      GenerateEntityContext(".", "mongodb", "Student").then(() => {
+        sinon.assert.calledOnce(formatStub);
+        done();
+      });
+    });
+
     it("should read database context template", done => {
       GenerateEntityContext(".", "mongodb", "Student").then(() => {
-        sinon.assert.calledOnce(readSpy);
+        sinon.assert.calledOnce(readStub);
         done();
       });
     });
 
     it("should parse database context template", done => {
       GenerateEntityContext(".", "mongodb", "Student").then(() => {
-        sinon.assert.calledOnce(renderSpy);
+        sinon.assert.calledOnce(renderStub);
         done();
       });
     });
 
     it("should save database context template", done => {
       GenerateEntityContext(".", "mongodb", "Student").then(() => {
-        sinon.assert.calledOnce(writeSpy);
+        sinon.assert.calledOnce(writeStub);
         done();
       });
     });

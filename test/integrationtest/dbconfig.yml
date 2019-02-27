@@ -1,6 +1,7 @@
 DbConfig:
   ConnectionStr: mongodb://localhost:27017/test
   Source: mongodb
+  installPackages: false
 Entities:
   Student:
     Fields:

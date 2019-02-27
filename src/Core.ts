@@ -7,7 +7,6 @@ import { GenerateEntity } from "./GenerationPipeline/DbEntityGenerator";
 import { GenerateSchema } from "./GenerationPipeline/DbSchemaGenerator";
 import { StartDbService } from "./GenerationPipeline/DbStartGenerator";
 import { InstallPackages } from "./GenerationPipeline/PackageInstaller";
-import { BeautifyDALFiles } from "./GenerationPipeline/Prettier";
 import Messages from "./Messages";
 
 class DbYamlCore {
@@ -19,13 +18,21 @@ class DbYamlCore {
       process.argv[2] && process.argv[2][0] !== "-" ? process.argv[2] : ".";
 
     try {
+      let ext = "";
+
       // Reject in case not config file exist
       if (!fs.existsSync(`${basePath}/dbconfig.yml`)) {
-        throw Messages.ConfigNotExist;
+        if (!fs.existsSync(`${basePath}/dbconfig.yaml`)) {
+          throw Messages.ConfigNotExist;
+        } else {
+          ext = "yaml";
+        }
+      } else {
+        ext = "yml";
       }
 
       // Read confiugration
-      const content = fs.readFileSync(`${basePath}/dbconfig.yml`).toString();
+      const content = fs.readFileSync(`${basePath}/dbconfig.${ext}`).toString();
 
       // Get config object after parsing yaml file
       const configObject = yaml.parse(content);
@@ -34,7 +41,9 @@ class DbYamlCore {
       this.CreateFolder(`${basePath}/DAL`);
 
       //  Build Required Packages
-      await this.BuildRequiredPackages(configObject);
+      if (configObject.DbConfig && configObject.DbConfig.installPackages) {
+        await this.BuildRequiredPackages(configObject);
+      }
 
       //  Database Start function
       await this.BuildDbStartFunction(basePath, configObject);
@@ -42,21 +51,12 @@ class DbYamlCore {
       //  build entities
       await this.BuildEntities(basePath, configObject);
 
-      //  beautify generated code
-      await this.BeautifyCode(basePath);
-
       console.log(Messages.Finish);
     } catch (ex) {
       console.log(ex);
     }
   }
 
-  /**
-   * @param  {string} basePath
-   */
-  public async BeautifyCode(basePath: string = ".") {
-    BeautifyDALFiles(basePath);
-  }
   /**
    * @param  {DbYamlConfig} configObject
    */

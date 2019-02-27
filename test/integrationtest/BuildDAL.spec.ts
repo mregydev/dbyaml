@@ -9,10 +9,7 @@ import { DbYamlConfig } from "../../src/Entities";
 
 describe("Integration test : Generating DAL test cases", () => {
   before(() => {
-    // if(fs.existsSync(`${__dirname}/DAL`))
-    // {
-    //     fs.rmdirSync(`${__dirname}/DAL`)
-    // }
+    testconfig.DbConfig.installPackages = false;
   });
 
   it("should print ConfigNotExist message in case config file not found", done => {
@@ -256,17 +253,18 @@ describe("Integration test : Generating DAL test cases", () => {
 
     execSync(`node ./output ${__dirname}`);
 
-    expect(
-      fs
-        .readFileSync(`${__dirname}/DAL/Student/StudentSchema.js`)
-        .toString()
-        .replace(/\s+/g, "")
-    ).to.contains(
-      fs
-        .readFileSync(`${__dirname}/expected/StudentSchema.js`)
-        .toString()
-        .replace(/\s+/g, "")
-    );
+    let generatedSchema = fs
+      .readFileSync(`${__dirname}/DAL/Student/StudentSchema.js`)
+      .toString()
+      .replace(/\s+/g, "")
+      .trim();
+    let expectedSchema = fs
+      .readFileSync(`${__dirname}/expected/StudentSchema.js`)
+      .toString()
+      .replace(/\s+/g, "")
+      .trim();
+
+    expect(generatedSchema).to.equals(expectedSchema);
 
     done();
   });

@@ -24,6 +24,9 @@ Database type you are using which is currently only mongodb that is supported in
 ## ConnectionStr 
 Connection string for database
 
+##intallPackages
+If true then related packages to datasource will be installed otherwise it will not be installed
+
 {Entities} contains information for the data access entities and each entity contains property called {Fields} which contains list of string representing properties of this entity with each one contains property name and property type which now can be either (String,Number,Boolean, ref)
 
 After building your dbconfig.yaml file run following command 

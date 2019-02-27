@@ -1,7 +1,9 @@
 import * as ejs from "ejs";
 import * as fs from "fs";
+import * as prettier from "prettier";
 import Config from "../Config";
 import Messages from "../Messages";
+
 /**
  * @param  {string} basepath
  * @param  {string} source
@@ -23,7 +25,9 @@ function GenerateEntityContext(
         );
 
         // bind entityname
-        const parsedText = ejs.render(template.toString(), { entityname });
+        let parsedText = ejs.render(template.toString(), { entityname });
+
+        parsedText = prettier.format(parsedText, { parser: "babel" });
 
         // Save to file
         fs.writeFileSync(
