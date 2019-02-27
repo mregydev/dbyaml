@@ -1,6 +1,6 @@
 # Introduction
 
-dbyaml is a command line tool to build data access layer based on config yaml file and its name should be dbconfig.yaml.
+dbyaml is a very basic command line tool to build data access layer based on config yaml file and its name should be dbconfig.yaml.
 
 # dbyaml file example
 
@@ -24,7 +24,7 @@ Database type you are using which is currently only mongodb that is supported in
 ## ConnectionStr 
 Connection string for database
 
-## intallPackages
+## installPackages
 If true then related packages to datasource will be installed otherwise it will not be installed
 
 ## Entities
